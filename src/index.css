@@ -1,0 +1,51 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0b0d0f;
+  --color-surface: #15181c;
+  --color-surface-raised: #1c2025;
+  --color-border-subtle: #2a2f36;
+  --color-pulse: #c9ff3d;
+  --color-pulse-dim: #9fd12b;
+  --color-signal: #ff4d4d;
+  --color-paper: #f4f6f5;
+  --color-muted: #8a9199;
+
+  --font-display: "Anton", "Bebas Neue", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+}
+
+::selection {
+  background-color: var(--color-pulse);
+  color: var(--color-ink);
+}
+
+@keyframes pulse-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-pulse-draw {
+  animation: pulse-draw 1.8s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
