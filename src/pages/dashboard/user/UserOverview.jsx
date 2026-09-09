@@ -5,12 +5,14 @@ import { useAuth } from "@/context/AuthContext";
 import { StatCard, RoleBadge } from "@/components/ui/Brand";
 import { DashboardHeader } from "@/components/shared/DashboardHeader";
 import { PageSpinner } from "@/components/ui/Spinner";
+import { ErrorState } from "@/components/ui/States";
 
 export function UserOverview() {
   const { user } = useAuth();
   const [stats, setStats] = useState(null);
   const [application, setApplication] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     async function loadData() {
@@ -21,6 +23,8 @@ export function UserOverview() {
         ]);
         setStats(statsData);
         setApplication(applicationData);
+      } catch {
+        setHasError(true);
       } finally {
         setIsLoading(false);
       }
@@ -29,6 +33,7 @@ export function UserOverview() {
   }, []);
 
   if (isLoading) return <PageSpinner />;
+  if (hasError || !stats) return <ErrorState message="We couldn't load your overview right now." />;
 
   return (
     <div>

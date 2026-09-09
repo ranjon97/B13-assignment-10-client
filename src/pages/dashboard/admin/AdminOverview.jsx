@@ -5,16 +5,24 @@ import { useAuth } from "@/context/AuthContext";
 import { StatCard, RoleBadge } from "@/components/ui/Brand";
 import { DashboardHeader } from "@/components/shared/DashboardHeader";
 import { PageSpinner } from "@/components/ui/Spinner";
+import { ErrorState } from "@/components/ui/States";
 
 export function AdminOverview() {
   const { user } = useAuth();
   const [stats, setStats] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    userApi.getAdminOverview().then(setStats);
+    userApi
+      .getAdminOverview()
+      .then(setStats)
+      .catch(() => setHasError(true))
+      .finally(() => setIsLoading(false));
   }, []);
 
-  if (!stats) return <PageSpinner />;
+  if (isLoading) return <PageSpinner />;
+  if (hasError || !stats) return <ErrorState message="We couldn't load platform statistics right now." />;
 
   return (
     <div>
